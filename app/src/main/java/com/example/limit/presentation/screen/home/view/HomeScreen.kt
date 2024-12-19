@@ -18,14 +18,19 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.example.limit.presentation.screen.home.viewmodel.HomeScreenViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.limit.presentation.screen.home.viewmodel.HomeScreenViewModelFactory
 import com.example.limit.utils.isUsageStatsPermissionGranted
 
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
+//    val navController = rememberNavController()
+
+
     val viewModel: HomeScreenViewModel = viewModel(
         factory = HomeScreenViewModelFactory(context)
     )
@@ -34,6 +39,7 @@ fun HomeScreen() {
 
 
     val appUsageStats = viewModel.appUsageStats.value
+
 
     LaunchedEffect(Unit) {
         if (!isUsageStatsPermissionGranted(context)) {
@@ -75,9 +81,13 @@ fun HomeScreen() {
                 Text("Grant Permission")
             }
         } else {
-            appUsageStats.forEach { usage ->
-                AppUsageItem(usageStats = usage)
+            appUsageStats.forEach { usageStats ->
+                AppUsageItem(usageStats = usageStats, onClick = {
+                    // Safely navigate to the app usage details screen with the package name
+                    navController.navigate("app_usage_details/${usageStats.packageName}")
+                })
             }
+
         }
     }
 }

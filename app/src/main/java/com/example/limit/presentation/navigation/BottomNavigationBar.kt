@@ -1,6 +1,7 @@
 package com.example.limit.presentation.navigation
 
 import androidx.compose.material3.Badge
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -18,12 +19,19 @@ fun BottomNavigationBar(
             val isSelected = navController.currentDestination?.route == item.route
             NavigationBarItem(
                 selected = isSelected,
-                onClick = { navController.navigate(item.route) },
-                icon = {
-                    if (item.badgeCount != null) {
-//                        Badge { Text(item.badgeCount.toString()) }
+                onClick = {
+                    // Navigate to the selected screen
+                    navController.navigate(item.route) {
+                        // Avoid stack duplication (optional)
+                        launchSingleTop = true
                     }
-                    androidx.compose.material3.Icon(
+                },
+                icon = {
+                    // Show badge if badgeCount is not null
+                    if (item.badgeCount != null && item.badgeCount > 0) {
+                        Badge { Text(item.badgeCount.toString()) }
+                    }
+                    Icon(
                         imageVector = if (isSelected) item.selectedIcon else item.unSelectedIcon,
                         contentDescription = item.title
                     )
