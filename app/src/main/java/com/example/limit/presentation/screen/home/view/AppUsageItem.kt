@@ -1,6 +1,8 @@
 package com.example.limit.presentation.screen.home.view
 
+import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -18,12 +20,13 @@ import com.example.limit.utils.getAppIconAsBitmap
 import com.example.limit.utils.getAppName
 
 @Composable
-fun AppUsageItem(usageStats: UsageStatsModel) {
+fun AppUsageItem(usageStats: UsageStatsModel, onClick: () -> Unit) {
     val context = LocalContext.current
     val appName = getAppName(context, usageStats.packageName)
     val appIconBitmap = getAppIconAsBitmap(context, usageStats.packageName)
     val timeSpent = usageStats.totalTimeInForeground / 1000 // Convert ms to seconds
 
+    // Format time as hours, minutes, and seconds
     fun formatTime(seconds: Long): String {
         val hours = seconds / 3600
         val minutes = (seconds % 3600) / 60
@@ -34,7 +37,8 @@ fun AppUsageItem(usageStats: UsageStatsModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { onClick() },  // Add clickable modifier to trigger onClick
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Row(
