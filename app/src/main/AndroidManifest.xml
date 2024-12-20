@@ -4,9 +4,9 @@
 
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-
-    <!-- This permission may not be required unless you're querying all packages -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
 
 
